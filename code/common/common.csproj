@@ -2,21 +2,18 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{20670392-6850-48C9-9052-6906A5D9DD0A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{B34D543A-B443-4344-BD0E-2CFC6283D643}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>server</RootNamespace>
-    <AssemblyName>server</AssemblyName>
+    <RootNamespace>common</RootNamespace>
+    <AssemblyName>common</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,8 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -38,11 +34,15 @@
     <Reference Include="Autofac">
       <HintPath>..\..\external\auto.fac\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>..\..\external\proto-buf.net\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="Rhino.Queues">
       <HintPath>..\..\external\rhino.queues\Rhino.Queues.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,18 +50,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Server.cs" />
+    <Compile Include="AbstractHandler.cs" />
+    <Compile Include="AsynchronousCommandProcessor.cs" />
+    <Compile Include="AutofacDependencyRegistry.cs" />
+    <Compile Include="AutofacDependencyRegistryBuilder.cs" />
+    <Compile Include="CommandProcessor.cs" />
+    <Compile Include="DependencyRegistry.cs" />
+    <Compile Include="EmptyCommand.cs" />
+    <Compile Include="FuncExtensions.cs" />
+    <Compile Include="Handler.cs" />
+    <Compile Include="Iterating.cs" />
+    <Compile Include="Logging.cs" />
+    <Compile Include="MessageHandler.cs" />
+    <Compile Include="messages\StartedApplication.cs" />
+    <Compile Include="NeedStartup.cs" />
+    <Compile Include="Observer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StartServiceBus.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\common\common.csproj">
-      <Project>{B34D543A-B443-4344-BD0E-2CFC6283D643}</Project>
-      <Name>common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
+    <Compile Include="Receiver.cs" />
+    <Compile Include="Resolve.cs" />
+    <Compile Include="RhinoPublisher.cs" />
+    <Compile Include="RhinoReceiver.cs" />
+    <Compile Include="ServiceBus.cs" />
+    <Compile Include="StringFormatting.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
