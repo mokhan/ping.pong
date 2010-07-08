@@ -13,9 +13,7 @@ namespace client
     {
         static void Main(string[] args)
         {
-            //var server_path = Path.Combine(Environment.CurrentDirectory, "../server/bin/Debug/server.exe");
-            //Process.Start(@"D:\development\mokhan\git\mo.money\product\presentation.windows.server\bin\Debug\presentation.windows.server.exe");
-            //Process.Start(server_path);
+            Process.Start(Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\..\..\server\bin\Debug\server.exe")));
 
             try
             {
@@ -62,14 +60,12 @@ namespace client
             builder.Register(x => new RhinoPublisher("server", 2200, manager)).As<ServiceBus>().SingletonScoped();
             builder.Register(x => new RhinoReceiver(manager.GetQueue("client"), x.Resolve<CommandProcessor>())).As<RhinoReceiver>().As<Receiver>().SingletonScoped();
 
-            // presentation infrastructure
-
-            // presenters
 
             // commanding
             builder.Register<AsynchronousCommandProcessor>().As<CommandProcessor>().SingletonScoped();
 
-            // queries
+
+            builder.Register<StartedApplicationHandler>().As<Handler>();
 
             Resolve.the<IEnumerable<NeedStartup>>().each(x => x.run());
             Resolve.the<CommandProcessor>().run();

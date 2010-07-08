@@ -57,17 +57,15 @@ namespace server
             builder.Register(x => new RhinoReceiver(manager.GetQueue("server"), x.Resolve<CommandProcessor>())).As<RhinoReceiver>().As<Receiver>().SingletonScoped();
 
             // commanding
-            //builder.Register<ContainerCommandBuilder>().As<CommandBuilder>().SingletonScoped();
             builder.Register<AsynchronousCommandProcessor>().As<CommandProcessor>().SingletonScoped();
-            //builder.Register<AddNewFamilyMemberHandler>().As<Handler>();
-            //builder.Register<FindAllFamilyHandler>().As<Handler>();
-            //builder.Register<SaveNewAccountCommand>().As<Handler>();
+            builder.Register<StartedApplicationHandler>().As<Handler>();
 
             // queries
 
             // repositories
             //builder.Register<NHibernatePersonRepository>().As<PersonRepository>().FactoryScoped();
             //builder.Register<NHibernateAccountRepository>().As<AccountRepository>().FactoryScoped();
+
 
             Resolve.the<IEnumerable<NeedStartup>>().each(x => x.run());
             Resolve.the<CommandProcessor>().run();

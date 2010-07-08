@@ -11,9 +11,9 @@ namespace common
             return new TextLogger(Console.Out);
         }
 
-        static public void log(this string item)
+        static public void log(this string item, params object[] arguments)
         {
-            new TextLogger(Console.Out).debug(item);
+            new TextLogger(Console.Out).debug(item, arguments);
         }
 
         static public void add_to_log(this Exception item)
@@ -33,7 +33,7 @@ namespace common
 
         public void debug(string message, params object[] arguments)
         {
-            writer.WriteLine("{0} {1}".format(Assembly.GetEntryAssembly().FullName, message.format(arguments)));
+            writer.WriteLine("{0}: {1}".format(Assembly.GetEntryAssembly().GetName().Name, message.format(arguments)));
         }
     }
 
