@@ -53,7 +53,8 @@ namespace server
             builder.Register(x => new RhinoPublisher("client", 2201, manager)).As<ServiceBus>().SingletonScoped();
             builder.Register(x => new RhinoReceiver(manager.GetQueue("server"), x.Resolve<CommandProcessor>())).As<RhinoReceiver>().As<Receiver>().SingletonScoped();
 
-            builder.Register<AsynchronousCommandProcessor>().As<CommandProcessor>().SingletonScoped();
+            //builder.Register<AsynchronousCommandProcessor>().As<CommandProcessor>().SingletonScoped();
+            builder.Register<SynchronousCommandProcessor>().As<CommandProcessor>().SingletonScoped();
             builder.Register<RequestHandler>().As<Handler>();
 
             Resolve.the<IEnumerable<NeedStartup>>().each(x => x.run());

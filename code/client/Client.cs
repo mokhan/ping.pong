@@ -62,8 +62,8 @@ namespace client
 
 
             // commanding
-            builder.Register<AsynchronousCommandProcessor>().As<CommandProcessor>().SingletonScoped();
-
+            //builder.Register<AsynchronousCommandProcessor>().As<CommandProcessor>().SingletonScoped();
+            builder.Register<SynchronousCommandProcessor>().As<CommandProcessor>().SingletonScoped();
 
             builder.Register<RequestHandler>().As<Handler>();
 

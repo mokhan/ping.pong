@@ -16,8 +16,10 @@ namespace common
 
         public override void handle(Message item)
         {
+            //Console.Clear();
             "received {0} from {1} {2}".log(item.message, item.source, DateTime.Now);
-            Thread.Sleep(5000);
+            //Thread.Sleep(5000);
+            //Console.In.ReadLine();
             var source = Assembly.GetEntryAssembly().GetName().Name;
             "sending  {0} from {1} {2}".log(item.message.Equals("ping") ? "pong" : "ping", source, DateTime.Now);
             bus.publish<Message>(x =>
