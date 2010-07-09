@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Transactions;
 using ProtoBuf;
 using Rhino.Queues;
@@ -9,7 +8,6 @@ namespace common
 {
     public class RhinoPublisher : ServiceBus
     {
-        BinaryFormatter formatter = new BinaryFormatter();
         readonly int port;
         string destination_queue;
         IQueueManager sender;
@@ -31,7 +29,6 @@ namespace common
             using (var transaction = new TransactionScope())
             {
                 var destination = "rhino.queues://localhost:{0}/{1}".format(port, destination_queue);
-                this.log().debug("sending {0} to {1}", item, destination);
                 sender.Send(new Uri(destination), create_payload_from(item));
                 transaction.Complete();
             }
@@ -42,8 +39,6 @@ namespace common
             using (var stream = new MemoryStream())
             {
                 Serializer.Serialize(stream, item);
-                //formatter.Serialize(stream, item);
-
                 var payload = new MessagePayload {Data = stream.ToArray()};
                 payload.Headers["type"] = typeof (T).FullName;
                 return payload;

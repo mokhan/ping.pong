@@ -14,7 +14,11 @@ namespace client
                 handler.handler(x);
             });
             Resolve.the<CommandProcessor>().add(receiver);
-            Resolve.the<ServiceBus>().publish<StartedApplication>(x => x.message = "client");
+            Resolve.the<ServiceBus>().publish<Message>(x =>
+            {
+                x.source = "client";
+                x.message = "ping";
+            });
         }
     }
 }

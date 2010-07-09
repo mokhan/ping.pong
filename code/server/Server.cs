@@ -9,7 +9,7 @@ namespace server
 {
     class Server
     {
-        static void Main(string[] args)
+        static void Main()
         {
             try
             {
@@ -46,26 +46,15 @@ namespace server
             Resolve.initialize_with(registry);
 
             builder.Register(x => registry).As<DependencyRegistry>().SingletonScoped();
-            //needs startups
             builder.Register<StartServiceBus>().As<NeedStartup>();
-
-            // infrastructure
 
             var manager = new QueueManager(new IPEndPoint(IPAddress.Loopback, 2200), "server.esent");
             manager.CreateQueues("server");
             builder.Register(x => new RhinoPublisher("client", 2201, manager)).As<ServiceBus>().SingletonScoped();
             builder.Register(x => new RhinoReceiver(manager.GetQueue("server"), x.Resolve<CommandProcessor>())).As<RhinoReceiver>().As<Receiver>().SingletonScoped();
 
-            // commanding
             builder.Register<AsynchronousCommandProcessor>().As<CommandProcessor>().SingletonScoped();
-            builder.Register<StartedApplicationHandler>().As<Handler>();
-
-            // queries
-
-            // repositories
-            //builder.Register<NHibernatePersonRepository>().As<PersonRepository>().FactoryScoped();
-            //builder.Register<NHibernateAccountRepository>().As<AccountRepository>().FactoryScoped();
-
+            builder.Register<RequestHandler>().As<Handler>();
 
             Resolve.the<IEnumerable<NeedStartup>>().each(x => x.run());
             Resolve.the<CommandProcessor>().run();

@@ -11,7 +11,7 @@ namespace client
 {
     class Client
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Process.Start(Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, @"..\..\..\server\bin\Debug\server.exe")));
 
@@ -65,7 +65,7 @@ namespace client
             builder.Register<AsynchronousCommandProcessor>().As<CommandProcessor>().SingletonScoped();
 
 
-            builder.Register<StartedApplicationHandler>().As<Handler>();
+            builder.Register<RequestHandler>().As<Handler>();
 
             Resolve.the<IEnumerable<NeedStartup>>().each(x => x.run());
             Resolve.the<CommandProcessor>().run();
