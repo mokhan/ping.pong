@@ -1,4 +1,5 @@
-﻿using common;
+﻿using System;
+using common;
 using common.messages;
 
 namespace client
@@ -14,6 +15,7 @@ namespace client
                 handler.handler(x);
             });
             Resolve.the<CommandProcessor>().add(receiver);
+            "sending ping {0}".log(DateTime.Now);
             Resolve.the<ServiceBus>().publish<Message>(x =>
             {
                 x.source = "client";
